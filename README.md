@@ -1,4 +1,4 @@
-# Microsoft Graph API Explorer 🔗
+# Microsoft Graph API Explorer
 
 [![PowerShell Gallery](https://img.shields.io/badge/PowerShell%20Gallery-Available-blue.svg)](https://www.powershellgallery.com/)
 [![Graph API](https://img.shields.io/badge/Microsoft%20Graph-v1.0-brightgreen.svg)](https://docs.microsoft.com/graph/)
@@ -10,18 +10,18 @@
 
 Streamline your Microsoft 365 operations with battle-tested PowerShell scripts that leverage the Microsoft Graph API for user management, group administration, security operations, and organizational automation.
 
-## 🎯 Key Features
+## Key Features
 
-- **👥 User Management** - Create, update, delete, and query users across your organization
-- **🏢 Group Administration** - Manage groups, memberships, and permissions at scale
-- **🔐 Security Operations** - Monitor sign-ins, manage app registrations, and audit activities
-- **📊 Reporting & Analytics** - Generate comprehensive reports and usage statistics
-- **🔄 Automation Ready** - Production-ready scripts with error handling and logging
-- **🛡️ Secure Authentication** - Multiple authentication methods including service principals
-- **📚 Educational** - Well-documented examples for learning Graph API concepts
-- **⚡ Performance Optimized** - Efficient batch operations and pagination handling
+- **User Management** - Create, update, delete, and query users across your organization
+- **Group Administration** - Manage groups, memberships, and permissions at scale
+- **Security Operations** - Monitor sign-ins, manage app registrations, and audit activities
+- **Reporting & Analytics** - Generate comprehensive reports and usage statistics
+- **Automation Ready** - Production-ready scripts with error handling and logging
+- **Secure Authentication** - Multiple authentication methods including service principals
+- **Educational** - Well-documented examples for learning Graph API concepts
+- **Performance Optimized** - Efficient batch operations and pagination handling
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 
@@ -63,26 +63,26 @@ Connect-MgGraph -Scopes "User.Read.All", "Group.Read.All"
 .\scripts\add-user-to-group.ps1 -UserId "user@domain.com" -GroupId "group-id"
 ```
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 Microsoft-Graph-API-Explorer/
-├── 📁 scripts/                 # PowerShell automation scripts
-│   ├── 👥 User Management
-│   ├── 🏢 Group Administration
-│   ├── 🔐 Security Operations
-│   ├── 📊 Reporting & Analytics
-│   └── 🔧 Utility Functions
-├── 📁 templates/               # JSON templates and configurations
-├── 📁 docs/                   # Documentation and guides
-├── 📁 examples/               # Usage examples and tutorials
-├── 📁 tests/                  # PowerShell Pester tests
-└── 📁 modules/                # Custom PowerShell modules
+├── scripts/                 # PowerShell automation scripts
+│   ├── User Management
+│   ├── Group Administration
+│   ├── Security Operations
+│   ├── Reporting & Analytics
+│   └── Utility Functions
+├── templates/               # JSON templates and configurations
+├── docs/                   # Documentation and guides
+├── examples/               # Usage examples and tutorials
+├── tests/                  # PowerShell Pester tests
+└── modules/                # Custom PowerShell modules
 ```
 
-## 🔧 Available Scripts
+## Available Scripts
 
-### 👥 **User Management**
+### User Management
 
 | Script | Description | Key Parameters |
 |--------|-------------|----------------|
@@ -93,7 +93,7 @@ Microsoft-Graph-API-Explorer/
 | `delete-user.ps1` | Remove user accounts safely | `-UserId`, `-Force`, `-BackupPath` |
 | `bulk-user-operations.ps1` | Batch user operations from CSV | `-CsvPath`, `-Operation`, `-WhatIf` |
 
-### 🏢 **Group Management**
+### Group Management
 
 | Script | Description | Key Parameters |
 |--------|-------------|----------------|
@@ -105,7 +105,7 @@ Microsoft-Graph-API-Explorer/
 | `remove-user-from-group.ps1` | Remove users from groups | `-UserId`, `-GroupId`, `-Confirm` |
 | `sync-group-membership.ps1` | Synchronize group memberships | `-SourceGroup`, `-TargetGroup`, `-Mode` |
 
-### 🔐 **Security & Compliance**
+### Security & Compliance
 
 | Script | Description | Key Parameters |
 |--------|-------------|----------------|
@@ -115,7 +115,7 @@ Microsoft-Graph-API-Explorer/
 | `manage-conditional-access.ps1` | Manage conditional access policies | `-PolicyId`, `-Action`, `-Parameters` |
 | `get-privileged-users.ps1` | Identify privileged role assignments | `-RoleFilter`, `-OutputPath`, `-IncludeGuests` |
 
-### 📊 **Reporting & Analytics**
+### Reporting & Analytics
 
 | Script | Description | Key Parameters |
 |--------|-------------|----------------|
@@ -125,7 +125,7 @@ Microsoft-Graph-API-Explorer/
 | `get-app-usage-stats.ps1` | Application usage statistics | `-AppId`, `-DateRange`, `-OutputPath` |
 | `tenant-health-report.ps1` | Overall tenant health assessment | `-OutputPath`, `-IncludeRecommendations` |
 
-### 🔧 **Utility & Configuration**
+### Utility & Configuration
 
 | Script | Description | Key Parameters |
 |--------|-------------|----------------|
@@ -134,7 +134,7 @@ Microsoft-Graph-API-Explorer/
 | `backup-configuration.ps1` | Backup tenant configuration | `-OutputPath`, `-IncludeUsers`, `-IncludeGroups` |
 | `restore-configuration.ps1` | Restore from backup | `-BackupPath`, `-WhatIf`, `-Selective` |
 
-## 🎨 Templates & Examples
+## Templates & Examples
 
 ### Authentication Templates
 - **Service Principal Authentication** - Automated authentication for production
@@ -148,43 +148,43 @@ Microsoft-Graph-API-Explorer/
 - **App Registration** - Service principal setup
 - **Conditional Access** - Security policy templates
 
-## 📚 Documentation
+## Documentation
 
-- **[🚀 Getting Started Guide](docs/getting-started.md)** - Complete setup and first steps
-- **[🔧 Script Reference](docs/script-reference.md)** - Detailed parameter documentation  
-- **[🏗️ Architecture Guide](docs/architecture.md)** - Graph API integration patterns
-- **[🔐 Security Best Practices](docs/security.md)** - Authentication and authorization
-- **[📊 Reporting Guide](docs/reporting.md)** - Data export and visualization
-- **[🔍 Troubleshooting](docs/troubleshooting.md)** - Common issues and solutions
-- **[🎓 Tutorials](docs/tutorials.md)** - Step-by-step learning guides
+- **[Getting Started Guide](docs/getting-started.md)** - Complete setup and first steps
+- **[Script Reference](docs/script-reference.md)** - Detailed parameter documentation
+- **[Architecture Guide](docs/architecture.md)** - Graph API integration patterns
+- **[Security Best Practices](docs/security.md)** - Authentication and authorization
+- **[Reporting Guide](docs/reporting.md)** - Data export and visualization
+- **[Troubleshooting](docs/troubleshooting.md)** - Common issues and solutions
+- **[Tutorials](docs/tutorials.md)** - Step-by-step learning guides
 
-## 🎯 Use Cases
+## Use Cases
 
-### **Enterprise User Management**
+### Enterprise User Management
 - Bulk user provisioning from HR systems
 - Automated user lifecycle management
 - Department-based access control
 - Guest user management and cleanup
 
-### **Group & Team Operations**
+### Group & Team Operations
 - Dynamic group membership based on user attributes
 - Microsoft Teams provisioning and management
 - Distribution list automation
 - Security group access reviews
 
-### **Security & Compliance**
+### Security & Compliance
 - Privileged access monitoring
 - Sign-in anomaly detection
 - Application permission auditing
 - Conditional access policy management
 
-### **Reporting & Analytics**
+### Reporting & Analytics
 - Executive dashboards and KPIs
 - License optimization reports
 - User activity and adoption metrics
 - Security posture assessments
 
-## 🔐 Authentication Methods
+## Authentication Methods
 
 ### Service Principal (Recommended for Automation)
 ```powershell
@@ -213,7 +213,7 @@ Connect-MgGraph -Identity
 Connect-MgGraph -Identity -ClientId $managedIdentityClientId
 ```
 
-## 🛡️ Security Best Practices
+## Security Best Practices
 
 ### Permission Management
 - **Principle of Least Privilege** - Request only required permissions
@@ -233,7 +233,7 @@ Connect-MgGraph -Identity -ClientId $managedIdentityClientId
 - **Data Minimization** - Collect only necessary user data
 - **Retention Policies** - Automated cleanup of temporary data
 
-## 🧪 Testing Framework
+## Testing Framework
 
 ### Pester Test Coverage
 ```powershell
@@ -253,36 +253,36 @@ Invoke-Pester -Path .\tests\Integration.Tests.ps1 -Tag "Integration"
 - **Permission Tests** - Required scope validation
 - **Security Tests** - Authentication and authorization validation
 
-## 🤝 Contributing
+## Contributing
 
 We welcome contributions from the Microsoft 365 and PowerShell communities! Whether you're fixing bugs, adding new scripts, or improving documentation, your help makes this toolkit better for everyone.
 
-**[📋 Contributing Guidelines →](CONTRIBUTING.md)**
+**[Contributing Guidelines →](CONTRIBUTING.md)**
 
 ### Quick Contribution Steps
-1. **🍴 Fork** the repository
-2. **🌿 Create** a feature branch (`git checkout -b feature/new-graph-script`)
-3. **📝 Commit** your changes (`git commit -m 'Add new user reporting script'`)
-4. **📤 Push** to the branch (`git push origin feature/new-graph-script`)
-5. **🔄 Create** a Pull Request
+1. **Fork** the repository
+2. **Create** a feature branch (`git checkout -b feature/new-graph-script`)
+3. **Commit** your changes (`git commit -m 'Add new user reporting script'`)
+4. **Push** to the branch (`git push origin feature/new-graph-script`)
+5. **Create** a Pull Request
 
 ### Areas We Need Help With
-- **🆕 New Scripts** - Additional Graph API automation
-- **🧪 Testing** - Pester test coverage expansion
-- **📖 Documentation** - Usage examples and tutorials
-- **🐛 Bug Fixes** - Issue resolution and improvements
-- **🔒 Security** - Authentication and permission optimization
+- **New Scripts** - Additional Graph API automation
+- **Testing** - Pester test coverage expansion
+- **Documentation** - Usage examples and tutorials
+- **Bug Fixes** - Issue resolution and improvements
+- **Security** - Authentication and permission optimization
 
-## 📊 Project Stats
+## Project Stats
 
 - **25+** PowerShell scripts covering major Graph API scenarios
-- **🔄** Automated testing with Pester framework
-- **🔍** PowerShell linting and security validation
-- **📖** Comprehensive documentation and examples
-- **🤝** Community-driven development and contributions
-- **🔐** Production-ready security and error handling
+- **Automated testing** with Pester framework
+- **PowerShell linting** and security validation
+- **Comprehensive documentation** and examples
+- **Community-driven** development and contributions
+- **Production-ready** security and error handling
 
-## 🌐 Microsoft Graph Integration
+## Microsoft Graph Integration
 
 ### Supported Graph API Versions
 - **Microsoft Graph v1.0** - Production workloads (recommended)
@@ -296,25 +296,25 @@ We welcome contributions from the Microsoft 365 and PowerShell communities! Whet
 - **Security** - `/security/alerts`, `/auditLogs/signIns`
 - **Reports** - `/reports/getEmailActivityUserDetail`
 
-## 📄 License
+## License
 
 This project is licensed under the [MIT License](LICENSE) - see the file for details.
 
-## 🆘 Support
+## Support
 
-- **🐛 Bug Reports** - [Create an issue](https://github.com/wesellis/Microsoft-Graph-API-Explorer/issues/new?template=bug_report.md)
-- **💡 Feature Requests** - [Suggest improvements](https://github.com/wesellis/Microsoft-Graph-API-Explorer/issues/new?template=feature_request.md)
-- **❓ Questions** - [Start a discussion](https://github.com/wesellis/Microsoft-Graph-API-Explorer/discussions)
-- **📖 Documentation** - Check our [docs folder](docs/) for comprehensive guides
+- **Bug Reports** - [Create an issue](https://github.com/wesellis/Microsoft-Graph-API-Explorer/issues/new?template=bug_report.md)
+- **Feature Requests** - [Suggest improvements](https://github.com/wesellis/Microsoft-Graph-API-Explorer/issues/new?template=feature_request.md)
+- **Questions** - [Start a discussion](https://github.com/wesellis/Microsoft-Graph-API-Explorer/discussions)
+- **Documentation** - Check our [docs folder](docs/) for comprehensive guides
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - **Microsoft Graph Team** - For the comprehensive API and excellent documentation
 - **PowerShell Community** - For tools, modules, and best practices
 - **Microsoft 365 Community** - For feedback, testing, and real-world scenarios
 - **Contributors** - For making this toolkit better with code, documentation, and ideas
 
-## 🔗 Related Resources
+## Related Resources
 
 - **[Microsoft Graph Documentation](https://docs.microsoft.com/graph/)** - Official API documentation
 - **[Graph Explorer](https://developer.microsoft.com/graph/graph-explorer)** - Interactive API testing
@@ -323,12 +323,8 @@ This project is licensed under the [MIT License](LICENSE) - see the file for det
 
 ---
 
-<div align="center">
+**Microsoft Graph API Explorer**
 
-**⭐ Star this repo if it helps your Microsoft 365 automation! ⭐**
+Made for Microsoft 365 administrators and developers
 
-Made with ❤️ for Microsoft 365 administrators and developers
-
-[🚀 Get Started](docs/getting-started.md) • [📖 Documentation](docs/) • [🤝 Contribute](CONTRIBUTING.md) • [💬 Discussions](https://github.com/wesellis/Microsoft-Graph-API-Explorer/discussions)
-
-</div>
+[Get Started](docs/getting-started.md) • [Documentation](docs/) • [Contribute](CONTRIBUTING.md) • [Discussions](https://github.com/wesellis/Microsoft-Graph-API-Explorer/discussions)
