@@ -1,0 +1,315 @@
+name: PowerShell Graph API Validation
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - 'scripts/**/*.ps1'
+      - 'modules/**/*.ps1'
+      - 'modules/**/*.psm1'
+      - 'tests/**/*.ps1'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'scripts/**/*.ps1'
+      - 'modules/**/*.ps1'
+      - 'modules/**/*.psm1'
+      - 'tests/**/*.ps1'
+  workflow_dispatch:
+
+jobs:
+  validate-powershell:
+    name: PowerShell and Graph API Validation
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Setup PowerShell
+      uses: actions/setup-powershell@v1
+      
+    - name: Install required modules
+      shell: pwsh
+      run: |
+        Set-PSRepository PSGallery -InstallationPolicy Trusted
+        
+        # Core development modules
+        Install-Module -Name PSScriptAnalyzer -Force -Scope CurrentUser
+        Install-Module -Name Pester -Force -Scope CurrentUser -SkipPublisherCheck
+        Install-Module -Name platyPS -Force -Scope CurrentUser
+        
+        # Microsoft Graph modules (for validation)
+        Install-Module -Name Microsoft.Graph.Authentication -Force -Scope CurrentUser
+        Install-Module -Name Microsoft.Graph.Users -Force -Scope CurrentUser
+        Install-Module -Name Microsoft.Graph.Groups -Force -Scope CurrentUser
+        Install-Module -Name Microsoft.Graph.Security -Force -Scope CurrentUser
+        Install-Module -Name Microsoft.Graph.Reports -Force -Scope CurrentUser
+        
+        Write-Host "✅ All required modules installed successfully" -ForegroundColor Green
+        
+    - name: Run PSScriptAnalyzer on scripts
+      shell: pwsh
+      run: |
+        Write-Host "Analyzing PowerShell scripts..." -ForegroundColor Blue
+        
+        $analysisResults = @()
+        $errorCount = 0
+        $warningCount = 0
+        
+        # Analyze all PowerShell scripts
+        $scriptFiles = Get-ChildItem -Path "./scripts" -Filter "*.ps1" -Recurse
+        $moduleFiles = Get-ChildItem -Path "./modules" -Filter "*.ps*1" -Recurse -ErrorAction SilentlyContinue
+        $testFiles = Get-ChildItem -Path "./tests" -Filter "*.ps1" -Recurse -ErrorAction SilentlyContinue
+        
+        $allFiles = $scriptFiles + $moduleFiles + $testFiles
+        
+        foreach ($file in $allFiles) {
+          Write-Host "Analyzing: $($file.Name)" -ForegroundColor Cyan
+          $results = Invoke-ScriptAnalyzer -Path $file.FullName -Severity Error,Warning,Information
+          
+          if ($results) {
+            $analysisResults += $results
+            $fileErrors = ($results | Where-Object Severity -eq 'Error').Count
+            $fileWarnings = ($results | Where-Object Severity -eq 'Warning').Count
+            $errorCount += $fileErrors
+            $warningCount += $fileWarnings
+            
+            Write-Host "  Errors: $fileErrors, Warnings: $fileWarnings" -ForegroundColor Yellow
+          } else {
+            Write-Host "  ✅ Clean" -ForegroundColor Green
+          }
+        }
+        
+        if ($analysisResults) {
+          Write-Host "`nPSScriptAnalyzer Results:" -ForegroundColor Red
+          $analysisResults | Format-Table -AutoSize
+          
+          Write-Host "Summary: $errorCount errors, $warningCount warnings" -ForegroundColor Yellow
+          
+          if ($errorCount -gt 0) {
+            Write-Host "❌ PSScriptAnalyzer found $errorCount errors. Please fix before merging." -ForegroundColor Red
+            exit 1
+          } else {
+            Write-Host "✅ No errors found, but $warningCount warnings exist." -ForegroundColor Yellow
+          }
+        } else {
+          Write-Host "✅ PSScriptAnalyzer found no issues!" -ForegroundColor Green
+        }
+        
+    - name: Validate PowerShell syntax
+      shell: pwsh
+      run: |
+        Write-Host "Validating PowerShell syntax..." -ForegroundColor Blue
+        
+        $syntaxErrors = @()
+        $scriptFiles = Get-ChildItem -Path . -Filter "*.ps1" -Recurse | Where-Object { 
+          $_.FullName -notlike "*/.git/*" 
+        }
+        
+        foreach ($file in $scriptFiles) {
+          try {
+            $null = [System.Management.Automation.PSParser]::Tokenize((Get-Content $file.FullName -Raw), [ref]$null)
+            Write-Host "✅ Syntax OK: $($file.Name)" -ForegroundColor Green
+          }
+          catch {
+            Write-Host "❌ Syntax Error in $($file.Name): $($_.Exception.Message)" -ForegroundColor Red
+            $syntaxErrors += $file.Name
+          }
+        }
+        
+        if ($syntaxErrors.Count -gt 0) {
+          Write-Host "Found syntax errors in $($syntaxErrors.Count) files" -ForegroundColor Red
+          exit 1
+        } else {
+          Write-Host "✅ All PowerShell files have valid syntax" -ForegroundColor Green
+        }
+        
+    - name: Validate Graph API module imports
+      shell: pwsh
+      run: |
+        Write-Host "Validating Microsoft Graph module usage..." -ForegroundColor Blue
+        
+        $scriptFiles = Get-ChildItem -Path "./scripts" -Filter "*.ps1" -Recurse
+        $validationResults = @()
+        
+        foreach ($file in $scriptFiles) {
+          $content = Get-Content $file.FullName -Raw
+          $fileResults = @{
+            File = $file.Name
+            HasGraphImport = $false
+            GraphModules = @()
+            GraphCmdlets = @()
+            Issues = @()
+          }
+          
+          # Check for Graph module imports
+          if ($content -match "Import-Module.*Microsoft\.Graph") {
+            $fileResults.HasGraphImport = $true
+            $graphImports = [regex]::Matches($content, "Import-Module.*Microsoft\.Graph\.[\w]+")
+            $fileResults.GraphModules = $graphImports.Value
+          }
+          
+          # Check for Graph cmdlets
+          $graphCmdlets = [regex]::Matches($content, "(Get-Mg|Set-Mg|New-Mg|Remove-Mg|Update-Mg|Invoke-Mg)[\w]+")
+          $fileResults.GraphCmdlets = $graphCmdlets.Value | Sort-Object -Unique
+          
+          # Validate that Graph cmdlets have corresponding imports
+          if ($fileResults.GraphCmdlets.Count -gt 0 -and -not $fileResults.HasGraphImport) {
+            $fileResults.Issues += "Uses Graph cmdlets but missing Graph module imports"
+          }
+          
+          # Check for authentication validation
+          if ($fileResults.GraphCmdlets.Count -gt 0 -and $content -notmatch "Get-MgContext") {
+            $fileResults.Issues += "Uses Graph cmdlets but missing authentication validation"
+          }
+          
+          $validationResults += $fileResults
+        }
+        
+        # Report results
+        $filesWithIssues = $validationResults | Where-Object { $_.Issues.Count -gt 0 }
+        
+        if ($filesWithIssues) {
+          Write-Host "⚠️ Graph API validation issues found:" -ForegroundColor Yellow
+          foreach ($file in $filesWithIssues) {
+            Write-Host "File: $($file.File)" -ForegroundColor White
+            foreach ($issue in $file.Issues) {
+              Write-Host "  - $issue" -ForegroundColor Yellow
+            }
+          }
+        } else {
+          Write-Host "✅ All Graph API usage looks correct" -ForegroundColor Green
+        }
+        
+        # Report Graph API usage summary
+        $totalGraphScripts = ($validationResults | Where-Object { $_.GraphCmdlets.Count -gt 0 }).Count
+        $uniqueCmdlets = ($validationResults | ForEach-Object { $_.GraphCmdlets } | Sort-Object -Unique).Count
+        
+        Write-Host "`nGraph API Usage Summary:" -ForegroundColor Blue
+        Write-Host "Scripts using Graph API: $totalGraphScripts" -ForegroundColor White
+        Write-Host "Unique Graph cmdlets: $uniqueCmdlets" -ForegroundColor White
+        
+    - name: Run Pester tests
+      shell: pwsh
+      run: |
+        if (Test-Path ./tests) {
+          Write-Host "Running Pester tests..." -ForegroundColor Blue
+          
+          # Configure Pester
+          $pesterConfig = New-PesterConfiguration
+          $pesterConfig.Run.Path = './tests'
+          $pesterConfig.Output.Verbosity = 'Detailed'
+          $pesterConfig.CodeCoverage.Enabled = $true
+          $pesterConfig.CodeCoverage.Path = './scripts/*.ps1'
+          $pesterConfig.TestResult.Enabled = $true
+          $pesterConfig.TestResult.OutputPath = './TestResults.xml'
+          $pesterConfig.TestResult.OutputFormat = 'NUnitXml'
+          
+          # Run tests
+          $result = Invoke-Pester -Configuration $pesterConfig
+          
+          if ($result.FailedCount -gt 0) {
+            Write-Host "❌ $($result.FailedCount) tests failed" -ForegroundColor Red
+            exit 1
+          } else {
+            Write-Host "✅ All $($result.PassedCount) tests passed" -ForegroundColor Green
+          }
+          
+          # Report code coverage
+          if ($result.CodeCoverage.CommandsExecutedCount -gt 0) {
+            $coveragePercent = [math]::Round(($result.CodeCoverage.CommandsExecutedCount / $result.CodeCoverage.CommandsAnalyzedCount) * 100, 2)
+            Write-Host "📊 Code Coverage: $coveragePercent%" -ForegroundColor Blue
+          }
+        } else {
+          Write-Host "ℹ️ No tests directory found, skipping Pester tests" -ForegroundColor Blue
+        }
+        
+    - name: Security and best practices validation
+      shell: pwsh
+      run: |
+        Write-Host "Performing security and best practices validation..." -ForegroundColor Blue
+        
+        $securityIssues = @()
+        $scriptFiles = Get-ChildItem -Path "./scripts" -Filter "*.ps1" -Recurse
+        
+        foreach ($file in $scriptFiles) {
+          $content = Get-Content $file.FullName -Raw
+          
+          # Check for hardcoded credentials
+          $credentialPatterns = @(
+            'password\s*=\s*["''][^"'']+["'']',
+            'secret\s*=\s*["''][^"'']+["'']',
+            'key\s*=\s*["''][^"'']+["'']',
+            'token\s*=\s*["''][^"'']+["'']',
+            'clientsecret\s*=\s*["''][^"'']+["'']',
+            'tenantid\s*=\s*["''][a-f0-9\-]{36}["'']'
+          )
+          
+          foreach ($pattern in $credentialPatterns) {
+            if ($content -match $pattern) {
+              $securityIssues += "Potential hardcoded credential in $($file.Name): $pattern"
+            }
+          }
+          
+          # Check for ConvertTo-SecureString with plaintext
+          if ($content -match 'ConvertTo-SecureString.*-AsPlainText') {
+            $securityIssues += "Potential plaintext password usage in $($file.Name)"
+          }
+          
+          # Check for proper error handling in Graph API calls
+          if ($content -match "(Get-Mg|Set-Mg|New-Mg|Remove-Mg|Update-Mg|Invoke-Mg)" -and $content -notmatch "try.*catch") {
+            $securityIssues += "Graph API calls without proper error handling in $($file.Name)"
+          }
+          
+          # Check for authentication validation
+          if ($content -match "(Get-Mg|Set-Mg|New-Mg|Remove-Mg|Update-Mg|Invoke-Mg)" -and $content -notmatch "Get-MgContext") {
+            $securityIssues += "Graph API usage without authentication validation in $($file.Name)"
+          }
+        }
+        
+        # Check for good security practices
+        $goodPractices = 0
+        foreach ($file in $scriptFiles) {
+          $content = Get-Content $file.FullName -Raw
+          
+          if ($content -match 'Test-Path|Test-Connection') {
+            $goodPractices++
+          }
+          
+          if ($content -match 'try.*catch.*finally') {
+            $goodPractices++
+          }
+          
+          if ($content -match '\[Parameter\(.*Mandatory.*\)\]') {
+            $goodPractices++
+          }
+        }
+        
+        # Report results
+        if ($securityIssues.Count -gt 0) {
+          Write-Host "⚠️ Security and best practices issues found:" -ForegroundColor Yellow
+          $securityIssues | ForEach-Object { Write-Host "  - $_" -ForegroundColor Yellow }
+        } else {
+          Write-Host "✅ No obvious security issues found" -ForegroundColor Green
+        }
+        
+        Write-Host "📊 Good practices detected: $goodPractices" -ForegroundColor Blue
+        
+    - name: Upload test results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: test-results
+        path: TestResults.xml
+        
+    - name: Generate validation summary
+      shell: pwsh
+      run: |
+        Write-Host "`n🎉 PowerShell and Graph API validation completed!" -ForegroundColor Green
+        Write-Host "📋 Summary:" -ForegroundColor Blue
+        Write-Host "  ✅ PowerShell syntax validation" -ForegroundColor Green
+        Write-Host "  ✅ PSScriptAnalyzer validation" -ForegroundColor Green  
+        Write-Host "  ✅ Microsoft Graph API usage validation" -ForegroundColor Green
+        Write-Host "  ✅ Security best practices check" -ForegroundColor Green
+        Write-Host "  ✅ Pester test execution" -ForegroundColor Green

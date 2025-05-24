@@ -1,1 +1,191 @@
+# PowerShell
+*.ps1xml
+*.psm1
+*.psd1
+!scripts/*.ps1
+!modules/*.ps1
+!modules/*.psm1
+!modules/*.psd1
+!tests/*.ps1
+!examples/*.ps1
+
+# Configuration files with sensitive data
 config/*.json
+config/*.xml
+*.config
+*.settings
+appsettings.json
+appsettings.*.json
+
+# Credentials and secrets
+*.credentials
+*.key
+*.pfx
+*.p12
+*.pem
+*.crt
+*.cer
+client_secret.txt
+tenant_id.txt
+
+# Microsoft Graph specific
+graph_credentials.json
+app_registration.json
+service_principal.json
+*.token
+access_token.txt
+refresh_token.txt
+
+# Azure specific
+.azure/
+azuredeploy.parameters.*.json
+*.publishsettings
+*.azurePubxml
+
+# PowerShell modules
+Modules/
+PSModules/
+!modules/
+
+# Logs and temporary files
+logs/
+*.log
+*.tmp
+*.temp
+temp/
+tmp/
+output/
+reports/
+exports/
+
+# Test results
+TestResults/
+*.trx
+*.coverage
+*.coveragexml
+coverage/
+
+# Build outputs
+bin/
+obj/
+*.dll
+*.exe
+*.msi
+dist/
+build/
+publish/
+
+# Documentation builds
+docs/_build/
+docs/site/
+*.pdf
+
+# IDE and editor files
+.vscode/
+.vs/
+*.suo
+*.user
+*.sln.docstates
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# Package managers
+node_modules/
+packages/
+*.nupkg
+
+# Environment specific
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# CSV and data files (often contain sensitive data)
+*.csv
+*.xlsx
+*.xls
+!examples/*.csv
+!templates/*.csv
+
+# JSON files that might contain sensitive data
+users_export.json
+groups_export.json
+tenant_config.json
+backup_*.json
+
+# Graph API specific outputs
+graph_response.json
+api_results.json
+bulk_operation_results.json
+
+# Test data and mock files
+test-data/
+mock-data/
+sample-responses/
+
+# Local development
+local-config/
+dev-settings/
+dev-tools/
+personal-scripts/
+
+# Security scan results
+security-scan-results/
+vulnerability-reports/
+
+# PowerShell specific
+$RECYCLE.BIN/
+profile.ps1
+
+# Windows specific
+*.lnk
+*.url
+
+# Archive files
+*.zip
+*.rar
+*.7z
+*.tar.gz
+
+# Documentation working files
+*.docx
+*.xlsx
+*.pptx
+~$*
+
+# Graph Explorer exports
+graph-explorer-*
+query-results-*
+
+# Certificate files
+*.p7b
+*.der
+
+# Database files
+*.db
+*.sqlite
+*.mdb
+
+# Performance profiling
+*.psprofile
+*.perflog
+
+# Microsoft Graph SDK cache
+.graph/
