@@ -1,27 +1,27 @@
-# 🔍 Microsoft Graph API Explorer PowerShell Toolkit
-### M365 Management and Automation Scripts
+# Microsoft Graph API Explorer PowerShell Toolkit
 
 [![PowerShell](https://img.shields.io/badge/PowerShell-7.0+-5391FE?style=for-the-badge&logo=powershell)](https://docs.microsoft.com/powershell/)
 [![Graph API](https://img.shields.io/badge/Graph_API-v1.0-00BCF2?style=for-the-badge&logo=microsoft)](https://graph.microsoft.com)
 [![M365](https://img.shields.io/badge/M365-All_Services-FF6900?style=for-the-badge&logo=microsoft-office)](https://www.microsoft.com/microsoft-365)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 
-## 🎯 Overview
+## Overview
 
-PowerShell toolkit for exploring and managing Microsoft 365 services through Graph API. Simplifies complex API calls, provides ready-to-use scripts for common tasks, and helps IT admins manage M365 environments efficiently.
+PowerShell toolkit for exploring and managing Microsoft 365 services through the Microsoft Graph API. This collection provides ready-to-use scripts for common administrative tasks and helps simplify complex API operations.
 
-### 📊 What It Does
+## Features
 
-- **Explore Graph API** without writing complex code
-- **Manage Users** across Azure AD and M365
-- **Automate Reports** for compliance and auditing
-- **Handle Bulk Operations** on mailboxes, groups, teams
-- **Export Data** in multiple formats
-- **Test API Calls** before implementation
+- **Graph API Explorer** - Test and explore Graph API endpoints
+- **User Management** - Manage users across Azure AD and M365
+- **Automated Reports** - Generate compliance and auditing reports
+- **Bulk Operations** - Handle large-scale operations on mailboxes, groups, and teams
+- **Data Export** - Export data in multiple formats
+- **API Testing** - Test API calls before implementation
 
-## 💡 Common Use Cases
+## Common Use Cases
 
 ### User Management
+
 ```powershell
 # Get all users with specific license
 Get-GraphUsers -Filter "assignedLicenses/any(x:x/skuId eq 'SPE_E5')"
@@ -34,6 +34,7 @@ Get-InactiveUsers -Days 90 | Export-Csv inactive_users.csv
 ```
 
 ### Email & Calendar
+
 ```powershell
 # Search emails across organization
 Search-GraphMail -Query "invoice" -From "2024-01-01"
@@ -46,6 +47,7 @@ Set-BulkOutOfOffice -UserList $users -Message "On vacation"
 ```
 
 ### Teams Management
+
 ```powershell
 # Create team from template
 New-GraphTeam -Template "ProjectTeam" -Name "Q1 Project"
@@ -57,7 +59,7 @@ Get-TeamMembershipReport -IncludeGuests | Export-Excel
 Get-InactiveTeams -Days 180 | Set-TeamArchiveStatus -Archive
 ```
 
-## ⚡ Quick Start
+## Quick Start
 
 ```powershell
 # Install module
@@ -71,9 +73,10 @@ Connect-GraphExplorer -TenantId "your-tenant"
 Get-GraphData -Resource "users" -Top 10
 ```
 
-## 🛠️ Key Scripts Included
+## Key Scripts Included
 
 ### Reports
+
 - `Get-LicenseReport.ps1` - License usage and costs
 - `Get-SecurityReport.ps1` - Security compliance status
 - `Get-MailboxSizeReport.ps1` - Storage utilization
@@ -81,6 +84,7 @@ Get-GraphData -Resource "users" -Top 10
 - `Get-GroupMembershipReport.ps1` - Group memberships
 
 ### Automation
+
 - `Sync-ADtoGraph.ps1` - Sync on-prem AD to Azure AD
 - `Process-JoinersLeavers.ps1` - Onboarding/offboarding
 - `Update-UserProperties.ps1` - Bulk property updates
@@ -88,15 +92,17 @@ Get-GraphData -Resource "users" -Top 10
 - `Backup-TeamsConfig.ps1` - Teams configuration backup
 
 ### Utilities
+
 - `Test-GraphPermissions.ps1` - Verify API permissions
 - `Convert-GraphData.ps1` - Transform API responses
 - `Export-GraphSchema.ps1` - Document API schema
 - `Monitor-GraphThrottling.ps1` - Track API limits
 - `Invoke-GraphBatch.ps1` - Batch API requests
 
-## 📈 Features
+## Advanced Features
 
 ### Smart Query Builder
+
 ```powershell
 # Build complex queries easily
 $query = New-GraphQuery -Resource "users" `
@@ -109,6 +115,7 @@ Invoke-GraphQuery $query
 ```
 
 ### Batch Operations
+
 ```powershell
 # Process in batches to avoid throttling
 $users | Invoke-GraphBatch -BatchSize 20 -Operation {
@@ -118,15 +125,16 @@ $users | Invoke-GraphBatch -BatchSize 20 -Operation {
 ```
 
 ### Error Handling
+
 ```powershell
 # Automatic retry with exponential backoff
 Invoke-GraphRequest -Uri $uri -RetryCount 3 -RetryDelay 2
 ```
 
-## 🔧 Advanced Features
-
 ### Custom Cmdlets
+
 Create your own Graph cmdlets:
+
 ```powershell
 function Get-CompanyPhones {
     Get-GraphData -Resource "users" `
@@ -136,6 +144,7 @@ function Get-CompanyPhones {
 ```
 
 ### Pipeline Support
+
 ```powershell
 # Chain operations
 Get-GraphUsers |
@@ -145,6 +154,7 @@ Get-GraphUsers |
 ```
 
 ### Parallel Processing
+
 ```powershell
 # Speed up bulk operations
 $users | ForEach-Object -Parallel {
@@ -152,7 +162,7 @@ $users | ForEach-Object -Parallel {
 } -ThrottleLimit 10
 ```
 
-## 📊 Export Options
+## Export Options
 
 - **CSV** - For Excel analysis
 - **JSON** - For further processing
@@ -160,7 +170,7 @@ $users | ForEach-Object -Parallel {
 - **XML** - For integration
 - **SQLite** - For local database
 
-## 🔒 Security
+## Security
 
 - **Certificate Authentication** supported
 - **Managed Identity** for Azure resources
@@ -168,7 +178,7 @@ $users | ForEach-Object -Parallel {
 - **Audit Logging** of all operations
 - **Secure Credential** storage
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 Common issues and solutions:
 
@@ -179,29 +189,28 @@ Common issues and solutions:
 | Token expired | Refresh with Connect-GraphExplorer |
 | No data returned | Verify filter syntax and permissions |
 
-## 📚 Documentation
+## Documentation
 
 - [Getting Started Guide](docs/getting-started.md)
 - [Common Scenarios](docs/scenarios.md)
 - [API Reference](docs/api-reference.md)
 - [Best Practices](docs/best-practices.md)
 
-## 🤝 Contributing
+## Requirements
 
-Contributions welcome! Share your useful Graph API scripts.
+- PowerShell 7.0 or higher
+- Microsoft.Graph PowerShell module
+- Azure AD app registration with appropriate permissions
+- M365 tenant access
 
-## 📜 License
+## Contributing
 
-MIT License - Free for all use
+Contributions are welcome. Please follow PowerShell best practices and include appropriate documentation for new scripts.
+
+## License
+
+MIT License - See LICENSE file for details.
 
 ---
 
-<div align="center">
-
-**Simplify Microsoft Graph API Management**
-
-[![Download](https://img.shields.io/badge/Download-Latest-brightgreen?style=for-the-badge)](https://github.com/yourusername/graph-explorer-toolkit/releases)
-
-*Free • Open Source • Community Driven*
-
-</div>
+**Note**: These scripts require appropriate Microsoft Graph API permissions. Always test in a non-production environment first and follow your organization's change management procedures.
