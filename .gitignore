@@ -3,6 +3,7 @@
 *.psm1
 *.psd1
 !scripts/*.ps1
+!scripts/**/*.ps1
 !modules/*.ps1
 !modules/*.psm1
 !modules/*.psd1
