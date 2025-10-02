@@ -1,9 +1,11 @@
 # Microsoft Graph API Explorer PowerShell Toolkit
 
-[![PowerShell](https://img.shields.io/badge/PowerShell-7.0+-5391FE?style=for-the-badge&logo=powershell)](https://docs.microsoft.com/powershell/)
-[![Graph API](https://img.shields.io/badge/Graph_API-v1.0-00BCF2?style=for-the-badge&logo=microsoft)](https://graph.microsoft.com)
-[![M365](https://img.shields.io/badge/M365-All_Services-FF6900?style=for-the-badge&logo=microsoft-office)](https://www.microsoft.com/microsoft-365)
-[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
+[![PowerShell](https://img.shields.io/badge/PowerShell-7.0+-5391FE?style=flat-square&logo=powershell&logoColor=white)](https://docs.microsoft.com/powershell/)
+[![Graph API](https://img.shields.io/badge/Graph_API-v1.0-00BCF2?style=flat-square&logo=microsoft&logoColor=white)](https://graph.microsoft.com)
+[![M365](https://img.shields.io/badge/M365-All_Services-FF6900?style=flat-square&logo=microsoft-office&logoColor=white)](https://www.microsoft.com/microsoft-365)
+[![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
+[![Stars](https://img.shields.io/github/stars/wesellis/TECH-Microsoft-Graph-API-Explorer-PowerShell-M365-Management?style=flat-square)](https://github.com/wesellis/TECH-Microsoft-Graph-API-Explorer-PowerShell-M365-Management/stargazers)
+[![Last Commit](https://img.shields.io/github/last-commit/wesellis/TECH-Microsoft-Graph-API-Explorer-PowerShell-M365-Management?style=flat-square)](https://github.com/wesellis/TECH-Microsoft-Graph-API-Explorer-PowerShell-M365-Management/commits)
 
 ## Overview
 
