@@ -57,6 +57,7 @@ temp/
 tmp/
 output/
 reports/
+!scripts/reports/
 exports/
 
 # Test results
